@@ -1,0 +1,60 @@
+name: delivery_app
+description: "A delivery app"
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  flutter_svg: ^2.0.4
+
+  provider: ^6.0.5
+  shared_preferences: ^2.0.18
+  url_launcher: ^6.2.5
+  intl_phone_field: ^3.2.0
+
+  http: ^1.4.0
+  firebase_core: ^3.15.1
+  firebase_auth: ^5.6.2
+  firebase_messaging: ^15.2.9
+  firebase_storage: ^12.4.9
+  cloud_firestore: ^5.6.11
+
+  google_sign_in: ^6.1.0
+#  sign_in_with_apple: ^7.0.1
+
+#  google_maps_flutter: ^2.12.3
+#  flutter_google_places: ^0.3.0
+#  google_maps_webservice: ^0.0.19
+#  google_api_headers: ^1.6.0
+
+  flutter_stripe: ^11.5.0
+  pay: ^3.2.1
+
+  image_picker: ^1.1.2
+  flutter_dotenv: ^5.2.1
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+
+  flutter_lints: ^5.0.0
+
+
+flutter:
+
+  uses-material-design: true
+  assets:
+    - assets/
+    - assets/icons/
+    - assets/gpay.json

@@ -1,0 +1,47 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "traveler-delivery-app-1",
+          "appId": "1:276892540208:android:ef9ab654e5fef6fb60fcf5",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "traveler-delivery-app-1",
+          "appId": "1:276892540208:ios:173cfdf5f50ce73560fcf5",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "traveler-delivery-app-1",
+          "configurations": {
+            "android": "1:276892540208:android:ef9ab654e5fef6fb60fcf5",
+            "ios": "1:276892540208:ios:173cfdf5f50ce73560fcf5",
+            "web": "1:276892540208:web:69023864d332475c60fcf5"
+          }
+        }
+      }
+    }
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run lint"
+      ]
+    }
+  ]
+}

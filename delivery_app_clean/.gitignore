@@ -1,0 +1,134 @@
+# -----------------------------
+# OS junk
+# -----------------------------
+.DS_Store
+Thumbs.db
+
+# -----------------------------
+# IDE / Editor
+# -----------------------------
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.atom/
+
+# -----------------------------
+# Flutter / Dart
+# -----------------------------
+.dart_tool/
+.packages
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+**/doc/api/
+.melos_tool/
+
+# -----------------------------
+# Builds / Coverage
+# -----------------------------
+/build/
+**/build/
+coverage/
+*.lcov
+
+# -----------------------------
+# Android
+# -----------------------------
+android/.gradle/
+android/local.properties
+android/key.properties
+android/app/*.keystore
+android/app/*.jks
+
+# Firebase Android config (don’t commit in public repos)
+**/google-services.json
+
+# -----------------------------
+# iOS
+# -----------------------------
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Flutter/.last_build_id
+ios/Runner/GeneratedPluginRegistrant.*
+
+# Firebase iOS config (don’t commit in public repos)
+**/GoogleService-Info.plist
+
+# Xcode user data
+**/*.xcodeproj/project.xcworkspace/
+**/*.xcodeproj/xcuserdata/
+**/*.xcworkspace/xcuserdata/
+
+# -----------------------------
+# macOS
+# -----------------------------
+macos/Pods/
+macos/Flutter/ephemeral/
+macos/Flutter/Flutter-Debug.xcconfig
+macos/Flutter/Flutter-Release.xcconfig
+macos/Flutter/GeneratedPluginRegistrant.swift
+
+# -----------------------------
+# Windows
+# -----------------------------
+windows/runner/Debug/
+windows/runner/Release/
+windows/runner/GeneratedPlugins.*
+
+# -----------------------------
+# Linux
+# -----------------------------
+linux/flutter/ephemeral/
+
+# -----------------------------
+# Web
+# -----------------------------
+web/.dart_tool/
+
+# -----------------------------
+# Firebase / Emulators
+# -----------------------------
+.firebase/
+firebase-debug.log
+functions/.runtimeconfig.json
+
+# -----------------------------
+# Fastlane (optional)
+# -----------------------------
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# -----------------------------
+# Logs / Misc
+# -----------------------------
+*.log
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+*.swp
+*.tmp
+
+# -----------------------------
+# Secrets / Certificates
+# -----------------------------
+.env
+.env.*
+*.pem
+*.p12
+*.mobileprovision
+
+# -----------------------------
+# Symbolication / Obfuscation
+# -----------------------------
+app.*.symbols
+app.*.map.json

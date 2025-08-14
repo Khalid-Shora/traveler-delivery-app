@@ -1,0 +1,127 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ========= Helpers =========
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    function isAdmin() {
+      return isSignedIn() && request.auth.token.admin == true;
+    }
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+    function moneyFieldsUnchanged() {
+      return
+        request.resource.data.total == resource.data.total &&
+        request.resource.data.currency == resource.data.currency &&
+        ( (('productPrice' in resource.data) ? request.resource.data.productPrice == resource.data.productPrice : true) &&
+          (('deliveryFee' in resource.data) ? request.resource.data.deliveryFee == resource.data.deliveryFee : true) &&
+          (('commission' in resource.data) ? request.resource.data.commission == resource.data.commission : true)
+        );
+    }
+
+    // ========= Users =========
+    match /users/{uid} {
+      allow read: if isSignedIn();
+      allow create: if isOwner(uid) || isAdmin();
+      allow update: if (isOwner(uid) && (
+        (!('role' in request.resource.data) || request.resource.data.role == resource.data.role) &&
+        (!('isAdmin' in request.resource.data) || request.resource.data.isAdmin == resource.data.isAdmin)
+      )) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ✅ Allow *any* user-owned subcollections under /users/{uid}/...
+    match /users/{uid}/{document=**} {
+      allow read, write: if isOwner(uid) || isAdmin();
+    }
+
+    // ========= Trips =========
+    match /trips/{tripId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && request.resource.data.travelerId == request.auth.uid;
+      allow update: if isSignedIn() && (
+        isAdmin() ||
+        (resource.data.travelerId == request.auth.uid &&
+         request.resource.data.travelerId == resource.data.travelerId)
+      );
+      allow delete: if isSignedIn() && (isAdmin() || resource.data.travelerId == request.auth.uid);
+    }
+
+    // ========= Orders =========
+    match /orders/{orderId} {
+      allow read: if isSignedIn() && (
+        resource.data.buyerId == request.auth.uid ||
+        resource.data.travelerId == request.auth.uid ||
+        isAdmin()
+      );
+      allow create: if isSignedIn() && request.resource.data.buyerId == request.auth.uid;
+      allow update: if isSignedIn() && (
+        isAdmin() ||
+        (
+          resource.data.buyerId == request.auth.uid &&
+          request.resource.data.buyerId == resource.data.buyerId &&
+          request.resource.data.travelerId == resource.data.travelerId &&
+          moneyFieldsUnchanged()
+        ) ||
+        (
+          (
+            (resource.data.travelerId == null && request.resource.data.travelerId == request.auth.uid) ||
+            (resource.data.travelerId == request.auth.uid && request.resource.data.travelerId == request.auth.uid)
+          ) &&
+          request.resource.data.buyerId == resource.data.buyerId &&
+          moneyFieldsUnchanged()
+        )
+      );
+      allow delete: if isAdmin();
+    }
+
+    // ========= Payments =========
+    match /payments/{paymentId} {
+      allow read: if isSignedIn() && (
+        resource.data.buyerId == request.auth.uid ||
+        resource.data.travelerId == request.auth.uid ||
+        isAdmin()
+      );
+      allow create, update, delete: if isAdmin();
+    }
+
+    // ========= Withdrawals =========
+    match /withdrawals/{withdrawalId} {
+      allow read: if isSignedIn() && (resource.data.travelerId == request.auth.uid || isAdmin());
+      allow create: if isSignedIn() && request.resource.data.travelerId == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+
+    // ========= Verifications =========
+    match /verifications/{uid} {
+      allow read: if isSignedIn() && (isOwner(uid) || isAdmin());
+      allow create: if isOwner(uid) || isAdmin();
+      allow update: if isSignedIn() && (
+        isAdmin() ||
+        (isOwner(uid) &&
+          (!('status' in request.resource.data) || request.resource.data.status == resource.data.status))
+      );
+      allow delete: if isAdmin();
+    }
+
+    // ========= Carts (if you also keep a top-level carts collection) =========
+    match /carts/{uid}/items/{itemId} {
+      allow read, create, update, delete: if isOwner(uid) || isAdmin();
+    }
+
+    // ========= Notifications (optional) =========
+    match /users/{uid}/notifications/{nid} {
+      allow read: if isOwner(uid) || isAdmin();
+      allow update: if isOwner(uid) || isAdmin();
+      allow create, delete: if isAdmin();
+    }
+
+    // ========= Default deny =========
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
